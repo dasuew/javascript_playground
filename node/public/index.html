@@ -40,7 +40,7 @@
 
         if ("geolocation" in navigator) {
             console.log('Geolocation is available')
-            navigator.geolocation.getCurrentPosition(position => {
+            navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude
                 const long = position.coords.longitude
 
@@ -49,6 +49,19 @@
 
                 marker.setLatLng([lat, long])
                 mymap.setView([lat, long], 18)
+
+                const data = { lat, long }
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+                const response = await fetch('/api', options)
+                const json = await response.json()
+
+                console.log(json)
             })
 
         } else {
