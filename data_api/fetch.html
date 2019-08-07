@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <img src='' id='picture' width='400px' />
+
+    <script>
+
+        const fetchThatStuff = async () => {
+            const response = await fetch('floki.jpg')
+            const blob = await response.blob()
+            document.getElementById('picture').src = URL.createObjectURL(blob)
+        }
+
+        fetchThatStuff()
+            .catch(error => {
+                console.error('We catch an error: ' + error)
+            })
+
+        fetchThatStuff()
+
+    </script>
+</body>
+
+</html>
