@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Show me the data</h1>
+
+    <script>
+        getData()
+
+        async function getData() {
+            const response = await fetch('/api')
+            const data = await response.json()
+            for (item of data) {
+                const root = document.createElement('div')
+                const date = document.createElement('div')
+                const geoLocation = document.createElement('div')
+                const lineBreak = document.createElement('br')
+
+                geoLocation.textContent = `GeoData: ${item.lat}°/ ${item.long}°`
+
+                const dateString = new Date(item.timestamp).toLocaleDateString()
+                date.textContent = `Timestamp: ${dateString}`
+
+                root.append(date, geoLocation, lineBreak)
+                document.body.append(root)
+            }
+            console.log(data)
+        }
+    </script>
+</body>
+
+</html>
