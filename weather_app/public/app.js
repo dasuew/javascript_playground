@@ -1,33 +1,44 @@
 let lat, long
-const button = document.getElementById('submit');
-
-button.addEventListener('click', async event => {
-    const data = { lat, long }
-
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }
-    const response = await fetch('/api', options)
-    const json = await response.json()
-
-    console.log(json)
-})
 
 if ("geolocation" in navigator) {
     console.log('Geolocation is available')
     navigator.geolocation.getCurrentPosition(async position => {
-        lat = position.coords.latitude
-        long = position.coords.longitude
+        let lat, long, weather
+        try {
+            lat = position.coords.latitude
+            long = position.coords.longitude
 
-        document.getElementById('latitude').textContent = lat.toFixed(2)
-        document.getElementById('longitude').textContent = long.toFixed(2)
+            document.getElementById('latitude').textContent = lat.toFixed(2)
+            document.getElementById('longitude').textContent = long.toFixed(2)
 
-        marker.setLatLng([lat, long])
-        mymap.setView([lat, long], 18)
+            const api_url = `/weather/${lat},${long}`
+            const weather_response = await fetch(api_url)
+            const weather_json = await weather_response.json()
+            weather = weather_json.weather.currently
+
+            document.getElementById('temp').textContent = weather.temperature
+            document.getElementById('summary').textContent = weather.summary
+            console.log(weather)
+
+            marker.setLatLng([lat, long])
+            mymap.setView([lat, long], 18)
+        }
+        catch (error) {
+            weather = { value: -1 }
+            console.error('something went wrong.')
+        }
+        const data = { lat, long, weather }
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        const db_response = await fetch('/api', options)
+        const db_json = await db_response.json()
+
+        console.log(db_json)
     })
 
 } else {
