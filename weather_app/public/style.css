@@ -1,0 +1,16 @@
+#map {
+    height: 600px;
+    width: 900px;
+}
+
+.container {
+    display: flex;
+}
+
+.element {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    width: auto;
+    background-color: #C6F7E2;
+}
